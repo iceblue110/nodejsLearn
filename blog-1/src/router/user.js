@@ -15,17 +15,20 @@ const {
 
 const handleBlogRouter = (req, res) => {
     const method = req.method //get post
-
+    console.log(req.body,req.query)
     //登录
     if (method == 'POST' && req.path === '/api/user/login') {
+        
         const {
             username,
             password
         } = req.body
+        
         // const {
         //     username,
         //     password
         // } = req.query
+        console.log(username,password)
         const result = login(username, password)
         return result.then(data => {
             if (data.username) {

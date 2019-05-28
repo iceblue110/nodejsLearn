@@ -49,7 +49,7 @@ const getPostData = (req) => {
 const serverHandle = ((req, res) => {
     //设置返回格式 json
     res.setHeader('Content-type', 'application/json')
-
+    console.log(req.query,req.body)
     //获取path
     const url = req.url
     req.path = url.split('?')[0]
