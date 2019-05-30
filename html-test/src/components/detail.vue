@@ -1,16 +1,15 @@
 <template>
   <div class="hello">
-    <div class="path" @click="goback"><i class="el-icon-back">返回</i></div>
     <h1>{{ info.title }}</h1>
     <h3>{{ info.author }}</h3>
     <i>{{ info.createtime }}</i>
-    <div v-html='info.content' class="content"></div>
+    <p>{{ info.content }}</p>
   </div>
 </template>
 
 <script>
-import request from "@/utils/request";
-import { time } from "@/utils/format";
+import request from "../utils/request";
+import { time } from "../utils/format";
 export default {
   name: "HelloWorld",
   data() {
@@ -33,9 +32,6 @@ export default {
       request.get("/api/blog/detail", params,res => {
         this.msg = res.data;
       });
-    },
-    goback(){
-      this.$router.go(-1)
     }
   },
   created() {
@@ -61,16 +57,5 @@ li {
 }
 a {
   color: #42b983;
-}
-.content{
-  text-align: left;
-
-  margin:20px auto;
-  background: #efefef;
-  padding:20px;
-}
-.path{
-  text-align: left;
-  margin:20px 0;
 }
 </style>

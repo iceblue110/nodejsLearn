@@ -3,7 +3,8 @@ const {
     getDetail,
     newBlog,
     updateBlog,
-    delBlog
+    delBlog,
+    countTotal
 } = require('../controller/blog')
 const {
     SuccessModel,
@@ -22,12 +23,13 @@ const loginCheck = (req) => {
 
 const handleBlogRouter = (req, res) => {
     const method = req.method //get post
-    const id = req.query.id || ''
+    const id = req.query.id || req.body.id || ''
 
     //获取blog list
     if (method == 'GET' && req.path === '/api/blog/list') {
         let author = req.query.author || ''
         const keyword = req.query.keyword || ''
+        let next = req.query.next || ''
         // const listData = getList(author, keyword)
         // return new SuccessModel(listData)
         if (req.query.isadmin) {
@@ -40,9 +42,14 @@ const handleBlogRouter = (req, res) => {
             //强制查询自己的博客
             author = req.session.username
         }
-        const result = getList(author, keyword)
+        // const total = countTotal(author, keyword, next)
+        
+        const result = getList(author, keyword, next)
         return result.then(listData => {
-            return new SuccessModel(listData)
+            // return total.then(total=>{
+                return new SuccessModel(listData)
+            // })
+            
         })
     }
 
@@ -58,7 +65,7 @@ const handleBlogRouter = (req, res) => {
 
     //新建一篇博客
     if (method == 'POST' && req.path === '/api/blog/new') {
-   
+
         const loginCheckResult = loginCheck(req)
         if (loginCheckResult) {
             //未登录

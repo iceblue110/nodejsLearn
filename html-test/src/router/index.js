@@ -4,6 +4,7 @@ import index from '@/components/index'
 import detail from '@/components/detail'
 import admin from '@/components/admin'
 import login from '@/components/login'
+import edit from '@/components/edit'
 import newBlog from '@/components/newBlog'
 
 Vue.use(Router)
@@ -25,6 +26,11 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: admin
+    },
+    {
+      path: '/edit',
+      name: 'edit',
+      component: edit
     },
     {
       path: '/login',

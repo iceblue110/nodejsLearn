@@ -4,11 +4,7 @@ import {
 } from 'element-ui'
 
 const get = (url, params = {}) => {
-  console.log(url, params)
-  let p = {
-    params: params
-  }
-  return axios.get(url, p)
+  return axios.get(url, params)
     .then(intercepter)
     .catch(error => {
       Message({
@@ -18,20 +14,8 @@ const get = (url, params = {}) => {
 
     })
 }
-const post = (url, params) => {
-  let p = {
-    params: params
-  }
-  return axios({
-    method: 'post',
-    url: url,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    data: params
-  }).then(intercepter)
-  return axios.post(url, p)
+const post = (url, params = {}) => {
+  return axios(url, params)
     .then(intercepter)
     .catch(error => {
       Message({
@@ -57,7 +41,7 @@ function intercepter(response) {
       message: response.data.message,
       type: 'error'
     });
-    return response.data
+    return {};
   }
   return response.data
 }

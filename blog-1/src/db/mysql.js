@@ -11,6 +11,7 @@ con.connect()
 console.log('已链接')
 //执行sql的函数
 function exec(sql) {
+    console.log(sql)
     const promise = new Promise((resolve, reject) => {
         con.query(sql, (err, result) => {
             if (err) {
@@ -24,5 +25,6 @@ function exec(sql) {
 }
 
 module.exports = {
-    exec
+    exec,
+    escape: mysql.escape
 }

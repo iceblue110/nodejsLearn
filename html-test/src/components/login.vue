@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import { get, post } from "@/utils/axios";
-import request from "@/utils/request";
+import { get,post } from "../utils/axios";
+import request from '../utils/request'
 export default {
   name: "HelloWorld",
   data() {
@@ -69,45 +69,22 @@ export default {
         checkPassword: [
           { required: true, validator: validatePass2, trigger: "blur" }
         ]
-      },
-      goHistory:''
+      }
     };
   },
-  
-  beforeRouteEnter(to, from, next) {
-    // console.log(this, 'beforeRouteEnter'); // undefined
-    // console.log(to, '组件独享守卫beforeRouteEnter第一个参数');
-    // console.log(from, '组件独享守卫beforeRouteEnter第二个参数');
-    // console.log(next, '组件独享守卫beforeRouteEnter第三个参数');
-    next(vm => {
-      //因为当钩子执行前，组件实例还没被创建
-      // vm 就是当前组件的实例相当于上面的 this，所以在 next 方法里你就可以把 vm 当 this 来用了。
-      vm.goHistory=from&&from.path
-      // console.log(vm);//当前组件的实例
-    });
-    // this.goHistory = from && from.path;
-    
-  },
   methods: {
-    getAdmin() {
-      get("/api/user/loginCheck").then(res => {
-        if (res.errno == "0") {
-          this.adminName = res.data.session.username;
-          this.isAdmin = true;
-        }
-      });
-    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          let params = {
-            username: this.ruleForm2.username,
-            password: this.ruleForm2.password
-          };
-          request.post("/api/user/login", params, res => {
-            this.$router.push(this.goHistory);
-            this.$router.go(0)
-          });
+          let params={
+            username:this.ruleForm2.username,
+            password:this.ruleForm2.password,
+          }
+          request.post("/api/user/login", params,res=>{
+            console.log(res)
+            this.$router.push({path:'./admin'})
+          })
+          
         } else {
           console.log("error submit!!");
           return false;
@@ -119,9 +96,7 @@ export default {
     },
     submit() {}
   },
-  created() {
-    this.getAdmin;
-  }
+  created() {}
 };
 </script>
 

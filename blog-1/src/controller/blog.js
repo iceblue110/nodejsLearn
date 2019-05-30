@@ -1,19 +1,48 @@
+const xss =require('xss')
 const {
-    exec
+    exec,
+    escape
 } = require('../db/mysql')
 
 //xxx.html?k1=v1&k2=v2&k3=v3
+const countTotal=(author, keyword,next)=>{
+    
+    
 
-const getList = (author, keyword) => {
-    let sql = `select * from blogs where 1=1 `
     if (author) {
-        sql += `and author='${author}'`
+        author = escape(author)
+        sql += `and author=${author}`
     }
     if (keyword) {
+        keyword = escape(keyword)
+        sql += `and title like %${keyword}%`
+    }
+    let term='*'
+    let sql = `select count(*) from blogs where 1=1 `
+
+    return exec(sql)
+    
+}
+const getList = (author, keyword,next) => {
+    
+   
+   
+    let sql = `select * from blogs where 1=1 `
+    if (author) {
+        author = escape(author)
+        sql += `and author=${author}`
+    }
+    if (keyword) {
+        keyword = escape(keyword)
         sql += `and title like '%${keyword}%'`
     }
-    sql += `order by createtime desc`
-
+    // if (next) {
+    //     let a=next*10
+    //     let b=a-9
+    //     sql += `limit '${b}','${a}'`
+    // }
+    sql += ` order by createtime desc`
+    
     //返回promise
     return exec(sql)
     //先返回假数据（格式是正确的）
@@ -42,7 +71,8 @@ const getList = (author, keyword) => {
 }
 //获取博客详情
 const getDetail = (id) => {
-    const sql = `select * from blogs where id='${id}'`
+    id = escape(id)
+    const sql = `select * from blogs where id=${id}`
     return exec(sql).then(rows => {
         return rows[0]
     })
@@ -75,16 +105,20 @@ const getDetail = (id) => {
 const newBlog = (blogData = {}) => {
     //blogdata 是一个博客对象，包含title content 属性
     console.log('newblog blogData ...', blogData)
-    const {
+    let {
         title,
         content,
         author
     } = blogData
+    title = xss(title)
+    content = xss(content)
+
     const createTime = Date.now()
     const sql = `
      insert into blogs (title,content,author,createTime) 
-     values ('${title}','${content}','${author}',${createTime});
+     values ('${title}','${content}','${author}','${createTime}');
     `
+
     return exec(sql).then(insertData => {
         console.log('insertData is', insertData)
         return {
@@ -98,11 +132,17 @@ const newBlog = (blogData = {}) => {
 
 //更新博客
 const updateBlog = (id, blogData = {}) => {
+
     //blogdata 是一个博客对象，包含title content 属性
-    const {
+    let {
         title,
         content
     } = blogData
+    // title = escape(title)
+    // content = escape(content)
+    title = xss(title)
+    content = xss(content)
+
     const sql = `
     update blogs set title='${title}',content='${content}'
     where id='${id}'
@@ -121,8 +161,11 @@ const updateBlog = (id, blogData = {}) => {
 
 const delBlog = (id, author) => {
     //id 为删除博客的id
+    id = escape(id)
+    author = escape(author)
+
     const sql = `
-     delete from blogs where id='${id}' and author='${author}';
+     delete from blogs where id=${id} and author=${author};
     `
     console.log('delBlog ...', id)
     return exec(sql).then(delData => {
