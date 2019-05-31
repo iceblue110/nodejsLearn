@@ -25,12 +25,14 @@ rl.on('line', (lineData) => {
     sum++
 
     const arr = lineData.split(' -- ')
+    //例 判断chrome浏览器的占比
     if (arr[2] && arr[2].indexOf('Chrome') > 0) {
         //累加 chrome 的数量
         chromeNum++
     }
 })
 
+//关闭读取
 rl.on('close', () => {
     console.log('chrome 占比:' + chromeNum / sum)
 })

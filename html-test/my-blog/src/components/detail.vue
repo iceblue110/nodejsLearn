@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import request from "@/utils/request";
+import { get, post } from "@/utils/axios";
 import { time } from "@/utils/format";
 export default {
   name: "HelloWorld",
@@ -30,7 +30,7 @@ export default {
       let params = {
         id: this.queryId
       };
-      request.get("/api/blog/detail", params,res => {
+      get("/api/blog/detail", params,res => {
         this.msg = res.data;
       });
     },

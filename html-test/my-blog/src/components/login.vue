@@ -29,7 +29,6 @@
 
 <script>
 import { get, post } from "@/utils/axios";
-import request from "@/utils/request";
 export default {
   name: "HelloWorld",
   data() {
@@ -104,9 +103,17 @@ export default {
             username: this.ruleForm2.username,
             password: this.ruleForm2.password
           };
-          request.post("/api/user/login", params, res => {
-            this.$router.push(this.goHistory);
-            this.$router.go(0)
+          post("/api/user/login", params, res => {
+            if(res.errno=='0'){
+              this.$router.push(this.goHistory);
+              this.$router.go(0)
+            }
+            else {
+              Message({
+                message: res.data.message,
+                type: 'error'
+              });
+            }
           });
         } else {
           console.log("error submit!!");

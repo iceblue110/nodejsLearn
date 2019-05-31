@@ -43,6 +43,7 @@ const post = (url, params) => {
 
 /* 拦截器 */
 function intercepter(response) {
+  debugger
   if (response.status != '200') {
     Message({
       message: response.statusText,
@@ -53,6 +54,7 @@ function intercepter(response) {
   }
 
   if (response.data.errno == '-1') {
+    debugger
     Message({
       message: response.data.message,
       type: 'error'
