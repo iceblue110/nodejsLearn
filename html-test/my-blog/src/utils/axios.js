@@ -23,15 +23,14 @@ const post = (url, params) => {
     params: params
   }
   return axios({
-    method: 'post',
-    url: url,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    data: params
-  }).then(intercepter)
-  return axios.post(url, p)
+      method: 'post',
+      url: url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      data: params
+    })
     .then(intercepter)
     .catch(error => {
       Message({
@@ -39,11 +38,19 @@ const post = (url, params) => {
         type: 'error'
       });
     })
+
+  // return axios.post(url, p)
+  //   .then(intercepter)
+  //   .catch(error => {
+  //     Message({
+  //       message: error,
+  //       type: 'error'
+  //     });
+  //   })
 }
 
 /* 拦截器 */
 function intercepter(response) {
-  debugger
   if (response.status != '200') {
     Message({
       message: response.statusText,
@@ -52,9 +59,7 @@ function intercepter(response) {
 
     return {};
   }
-
   if (response.data.errno == '-1') {
-    debugger
     Message({
       message: response.data.message,
       type: 'error'

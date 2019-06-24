@@ -63,7 +63,7 @@ export default {
     getAdmin() {
       get("/api/user/loginCheck").then(res => {
         if (res.errno == "0") {
-          this.adminName = res.data.session.username;
+          this.adminName = res.session.username;
           this.isAdmin = true;
         }
       });
