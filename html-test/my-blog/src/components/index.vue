@@ -7,7 +7,7 @@
           <div>
             <h3>{{item.title}}</h3>
             <i>作者：{{item.author}}</i>
-            <i> {{item.createtime}}</i>
+            <i>{{item.createtime}}</i>
           </div>
         </router-link>
       </li>
@@ -37,11 +37,10 @@ export default {
   },
   methods: {
     getList() {
-      let param={
-      //   // next:2
-      }
-      get("/api/blog/list",param).then(res => {
-        console.log(res.data);
+      let param = {
+        //   // next:2
+      };
+      get("/api/blog/list", param, res => {
         this.listData = res.data;
       });
     }

@@ -14,9 +14,7 @@
 
 <script>
 import Vue from "vue";
-import {
-  Message
-} from 'element-ui'
+import { Message } from "element-ui";
 import { get, post } from "@/utils/axios";
 // Import Froala Editor css files.
 import "froala-editor/css/froala_editor.pkgd.min.css";
@@ -29,7 +27,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      msg: this.$route.query.id?"编辑":"新建",
+      msg: this.$route.query.id ? "编辑" : "新建",
       title: "",
       queryId: this.$route.query.id || "",
       config: {
@@ -48,7 +46,7 @@ export default {
         id: this.queryId
       };
       console.log(param);
-      get("/api/blog/detail", param).then(res => {
+      get("/api/blog/detail", param, res => {
         console.log(res);
         this.title = res.data.title;
         this.content = res.data.content;
@@ -68,12 +66,12 @@ export default {
         url = "/api/blog/new";
       }
 
-      post(url, param).then(res => {
+      post(url, param, res => {
         Message({
           message: "提交成功",
           type: "success"
         });
-        this.$router.push({path:'./admin'})
+        this.$router.push({ path: "./admin" });
       });
     },
     reset() {}

@@ -1,29 +1,34 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <el-form
-      :model="ruleForm2"
-      status-icon
-      :rules="rules2"
-      ref="ruleForm2"
-      label-width="100px"
-      class="login"
-    >
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="ruleForm2.username"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="ruleForm2.password" auto-complete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码" prop="checkPassword">
-        <el-input type="password" v-model="ruleForm2.checkPassword" auto-complete="off"></el-input>
-      </el-form-item>
+    <div v-if="isAdmin">
+      已登陆成功
+    </div>
+    <div v-else>
+      <el-form
+        :model="ruleForm2"
+        status-icon
+        :rules="rules2"
+        ref="ruleForm2"
+        label-width="100px"
+        class="login"
+      >
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="ruleForm2.username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input type="password" v-model="ruleForm2.password" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPassword">
+          <el-input type="password" v-model="ruleForm2.checkPassword" auto-complete="off"></el-input>
+        </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
-        <el-button @click="resetForm('ruleForm2')">重置</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
+          <el-button @click="resetForm('ruleForm2')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -53,6 +58,7 @@ export default {
     };
     return {
       msg: "登陆",
+      isAdmin:localStorage.isAdmin,
       ruleForm2: {
         username: "",
         password: "",
@@ -88,7 +94,7 @@ export default {
   },
   methods: {
     getAdmin() {
-      get("/api/user/loginCheck").then(res => {
+      get("/api/user/loginCheck", res => {
         if (res.errno == "0") {
           this.adminName = res.data.session.username;
           this.isAdmin = true;
@@ -102,17 +108,11 @@ export default {
             username: this.ruleForm2.username,
             password: this.ruleForm2.password
           };
-          debugger
-          post("/api/user/login", params).then(res => {
-            debugger;
+
+          post("/api/user/login", params, res => {
             if (res.errno == "0") {
               this.$router.push(this.goHistory);
               this.$router.go(0);
-            } else {
-              Message({
-                message: res.data.message,
-                type: "error"
-              });
             }
           });
         } else {
@@ -127,7 +127,7 @@ export default {
     submit() {}
   },
   created() {
-    this.getAdmin;
+    // this.getAdmin;
   }
 };
 </script>

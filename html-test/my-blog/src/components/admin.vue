@@ -7,7 +7,7 @@
           <div>
             <h3>{{item.title}}</h3>
             <i>作者：{{item.author}}</i>
-            <i> {{item.createtime}}</i>
+            <i>{{item.createtime}}</i>
           </div>
         </router-link>
         <div class="handle">
@@ -45,7 +45,7 @@ export default {
       let params = {
         isadmin: 1
       };
-      get("/api/blog/list", params).then(res => {
+      get("/api/blog/list", params, res => {
         console.log(res.data);
         this.listData = res.data;
         if (res.errno == "-1") {
@@ -59,14 +59,14 @@ export default {
     },
     del(row) {
       const { id } = row;
-      post("/api/blog/del", { id: id }).then(res => {
+      post("/api/blog/del", { id: id }, res => {
         if (res.errno == "0") {
           Message({
             message: "删除成功",
             type: "success"
           });
         }
-       
+
         this.getList();
       });
     }

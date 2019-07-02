@@ -3,22 +3,25 @@ import {
   Message
 } from 'element-ui'
 
-const get = (url, params = {}) => {
+
+const get = (url, params = {}, sucess, fail) => {
   console.log(url, params)
   let p = {
     params: params
   }
   return axios.get(url, p)
     .then(intercepter)
+    .then(res => {
+      sucess(res)
+    })
     .catch(error => {
       Message({
         message: error,
         type: 'error'
       });
-
     })
 }
-const post = (url, params) => {
+const post = (url, params, sucess, fail) => {
   let p = {
     params: params
   }
@@ -32,6 +35,9 @@ const post = (url, params) => {
       data: params
     })
     .then(intercepter)
+    .then(res => {
+      sucess(res)
+    })
     .catch(error => {
       Message({
         message: error,
@@ -60,6 +66,7 @@ function intercepter(response) {
     return {};
   }
   if (response.data.errno == '-1') {
+    debugger
     Message({
       message: response.data.message,
       type: 'error'

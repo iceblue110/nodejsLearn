@@ -30,7 +30,9 @@ export default {
       let params = {
         id: this.queryId
       };
+      console.log(123)
       get("/api/blog/detail", params,res => {
+        console.log(res.data)
         this.msg = res.data;
       });
     },

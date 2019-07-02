@@ -61,10 +61,14 @@ export default {
 
   methods: {
     getAdmin() {
-      get("/api/user/loginCheck").then(res => {
+      get("/api/user/loginCheck", {}, res => {
         if (res.errno == "0") {
-          this.adminName = res.session.username;
+          this.adminName = res.data.username;
+          localStorage.isAdmin=true;
           this.isAdmin = true;
+        }
+        else{
+          localStorage.isAdmin=false
         }
       });
     },
@@ -81,7 +85,7 @@ export default {
     let path = this.$route.path;
     if (path == "/admin") {
       this.activeIndex = "1";
-    } else if(path == "/"){
+    } else if (path == "/") {
       this.activeIndex = "0";
     }
   }
@@ -97,7 +101,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height:100%;
+  height: 100%;
   overflow-y: auto;
 }
 
